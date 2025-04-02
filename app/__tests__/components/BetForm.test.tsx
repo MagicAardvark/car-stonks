@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import BetForm from "~/components/BetForm";
+import BetForm from "~/components/CarDetails/BetForm";
+import { ToastProvider } from "~/components/shared/ToastContext";
 import type { Car } from "~/types";
 
 // Mock data for testing
@@ -19,9 +20,16 @@ const mockCar: Car = {
   ],
 };
 
+// Helper function to render component within ToastProvider
+const renderWithToast = (ui: React.ReactElement) => {
+  return render(<ToastProvider>{ui}</ToastProvider>);
+};
+
 describe("BetForm Component", () => {
   it("renders the form correctly", () => {
-    const { getByText } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { getByText } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // Check if basic elements are visible
     expect(getByText("Trade Options")).toBeVisible();
@@ -34,7 +42,9 @@ describe("BetForm Component", () => {
 
   it("handles option type selection", async () => {
     const user = userEvent.setup();
-    const { getByText } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { getByText } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // Click the CALL button and check if it becomes active
     const callButton = getByText("CALL (Higher)");
@@ -55,7 +65,9 @@ describe("BetForm Component", () => {
 
   it("handles expiry period selection", async () => {
     const user = userEvent.setup();
-    const { getByText } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { getByText } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // Click the 3 months button
     const threeMonthButton = getByText("3 Months");
@@ -73,7 +85,9 @@ describe("BetForm Component", () => {
 
   it("handles percentage change selection", async () => {
     const user = userEvent.setup();
-    const { getByText } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { getByText } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // Click the +5% button
     const fivePercentButton = getByText("5%");
@@ -85,7 +99,9 @@ describe("BetForm Component", () => {
 
   it("handles quantity adjustments", async () => {
     const user = userEvent.setup();
-    const { container } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { container } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // First, select all required options to make quantity appear
     const callButton = container.querySelector(
@@ -104,12 +120,14 @@ describe("BetForm Component", () => {
 
     // Get the quantity buttons
     const decrementButton = container.querySelector(
-      "#quantity-selector button:first-child",
+      ".mt-2.flex.items-center button:first-child",
     );
     const incrementButton = container.querySelector(
-      "#quantity-selector button:last-child",
+      ".mt-2.flex.items-center button:last-child",
     );
-    const quantitySpan = container.querySelector("#quantity-selector span");
+    const quantitySpan = container.querySelector(
+      ".px-4.py-2.border-t.border-b.border-gray-300",
+    );
 
     // Initial quantity should be 1
     expect(quantitySpan?.textContent).toBe("1");
@@ -120,7 +138,8 @@ describe("BetForm Component", () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     // Check new quantity
     expect(
-      container.querySelector("#quantity-selector span")?.textContent,
+      container.querySelector(".px-4.py-2.border-t.border-b.border-gray-300")
+        ?.textContent,
     ).toBe("2");
 
     // Increment again
@@ -129,7 +148,8 @@ describe("BetForm Component", () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     // Check new quantity
     expect(
-      container.querySelector("#quantity-selector span")?.textContent,
+      container.querySelector(".px-4.py-2.border-t.border-b.border-gray-300")
+        ?.textContent,
     ).toBe("3");
 
     // Decrement the quantity
@@ -138,7 +158,8 @@ describe("BetForm Component", () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     // Check new quantity
     expect(
-      container.querySelector("#quantity-selector span")?.textContent,
+      container.querySelector(".px-4.py-2.border-t.border-b.border-gray-300")
+        ?.textContent,
     ).toBe("2");
 
     // Can't go below 1
@@ -148,28 +169,31 @@ describe("BetForm Component", () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     // Check new quantity
     expect(
-      container.querySelector("#quantity-selector span")?.textContent,
+      container.querySelector(".px-4.py-2.border-t.border-b.border-gray-300")
+        ?.textContent,
     ).toBe("1");
   });
 
   it("calculates premiums correctly", async () => {
     const user = userEvent.setup();
-    const { getByText } = render(<BetForm car={mockCar} onSubmit={() => {}} />);
+    const { getByText } = renderWithToast(
+      <BetForm car={mockCar} onSubmit={() => {}} />,
+    );
 
     // Select all options
     await user.click(getByText("CALL (Higher)"));
     await user.click(getByText("3 Months"));
     await user.click(getByText("5%"));
 
-    // Premium should be calculated and displayed
-    expect(getByText("Contract Premium")).toBeVisible();
+    // Premium should be calculated and displayed - use the actual text that appears
+    expect(getByText("Premium per Contract:")).toBeVisible();
   });
 
   it("submits the form with correct data", async () => {
     const user = userEvent.setup();
     const handleSubmit = vi.fn();
 
-    const { getByText, container } = render(
+    const { getByText, container } = renderWithToast(
       <BetForm car={mockCar} onSubmit={handleSubmit} />,
     );
 
@@ -178,8 +202,8 @@ describe("BetForm Component", () => {
     await user.click(getByText("3 Months"));
     await user.click(getByText("5%"));
 
-    // Click the Place Trade button
-    await user.click(getByText("Place Trade"));
+    // Click the Place Trade button - using the actual text that appears
+    await user.click(getByText("Place Option Trade"));
 
     // Click the Confirm Trade button in the dialog
     const confirmButton = container.querySelector(

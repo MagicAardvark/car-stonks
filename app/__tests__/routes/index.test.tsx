@@ -62,14 +62,14 @@ vi.mock("~/data", () => ({
 }));
 
 // Mock Layout component to simplify testing
-vi.mock("~/components/Layout", () => ({
+vi.mock("~/components/shared/Layout", () => ({
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="layout-mock">{children}</div>
   ),
 }));
 
 // Mock the Dashboard component
-vi.mock("~/components/Dashboard", () => ({
+vi.mock("~/components/Home/Dashboard", () => ({
   default: (props: {
     totalInvested: number;
     totalValue: number;

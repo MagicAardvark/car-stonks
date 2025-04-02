@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "@remix-run/react";
-import Layout from "~/components/Layout";
-import CarGrid from "~/components/CarGrid";
+import Layout from "~/components/shared/Layout";
+import CarGrid from "~/components/Cars/CarGrid";
 import { mockCars } from "~/data";
 
 // This component will render at /cars path

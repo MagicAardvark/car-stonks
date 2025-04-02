@@ -1,7 +1,8 @@
+import React from "react";
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Layout from "~/components/Layout";
+import Layout from "~/components/shared/Layout";
 
 // Helper to render with router
 const renderWithRouter = (ui: React.ReactNode) => {

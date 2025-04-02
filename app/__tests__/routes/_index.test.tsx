@@ -23,14 +23,14 @@ vi.mock("@remix-run/react", () => ({
 }));
 
 // Mock Layout
-vi.mock("~/components/Layout", () => ({
+vi.mock("~/components/shared/Layout", () => ({
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="layout">{children}</div>
   ),
 }));
 
 // Mock CarGrid
-vi.mock("~/components/CarGrid", () => ({
+vi.mock("~/components/Cars/CarGrid", () => ({
   default: ({ cars, showFilters }: { cars: Car[]; showFilters: boolean }) => (
     <div data-testid="car-grid" data-show-filters={showFilters.toString()}>
       {cars.map((car) => (

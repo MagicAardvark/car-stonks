@@ -1,6 +1,6 @@
-import Layout from "~/components/Layout";
-import Dashboard from "~/components/Dashboard";
 import { Link } from "@remix-run/react";
+import Layout from "~/components/shared/Layout";
+import Dashboard from "~/components/Home/Dashboard";
 import { mockCars, marketTrends, portfolioStats } from "~/data";
 
 export default function Index() {

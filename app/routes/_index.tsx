@@ -1,8 +1,8 @@
 import type { MetaFunction } from "@vercel/remix";
 import { Link } from "@remix-run/react";
 import { useMemo } from "react";
-import Layout from "~/components/Layout";
-import CarGrid from "~/components/CarGrid";
+import Layout from "~/components/shared/Layout";
+import CarGrid from "~/components/Cars/CarGrid";
 import { mockCars } from "~/data/cars";
 
 export const meta: MetaFunction = () => {

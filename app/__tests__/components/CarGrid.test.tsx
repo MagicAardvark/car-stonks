@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render } from "@testing-library/react";
 import * as testingLibrary from "@testing-library/react";
-import CarGrid from "~/components/CarGrid";
+import CarGrid from "~/components/Cars/CarGrid";
 import { BrowserRouter } from "react-router-dom";
 
 // Extract screen and fireEvent from testingLibrary

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Cars from "~/routes/cars";
-import { mockCars } from "~/data";
+import { mockCars } from "~/data/cars";
 import type { Car } from "~/types";
 
 // Create a location value that can be changed between tests
@@ -10,10 +10,25 @@ let mockLocation = { pathname: "/cars" };
 // Mock dependencies
 vi.mock("@remix-run/react", () => ({
   useLocation: () => mockLocation,
-  Outlet: () => <div data-testid="outlet" />,
+  Link: ({
+    to,
+    children,
+    className,
+  }: {
+    to: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <a href={to} className={className} data-testid={`link-to-${to}`}>
+      {children}
+    </a>
+  ),
+  useLoaderData: vi.fn(() => ({ cars: mockCars })),
+  useOutletContext: vi.fn(),
+  Outlet: () => <div data-testid="outlet">Outlet Content</div>,
 }));
 
-vi.mock("~/components/Layout", () => ({
+vi.mock("~/components/shared/Layout", () => ({
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="layout">{children}</div>
   ),

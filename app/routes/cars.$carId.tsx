@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "@remix-run/react";
-import BetForm from "~/components/BetForm";
+import BetForm from "~/components/CarDetails/BetForm";
 import {
   mockCars,
   portfolioStats as initialPortfolioStats,
@@ -8,11 +8,13 @@ import {
 } from "~/data";
 import { v4 as uuidv4 } from "uuid";
 import type { Car, PortfolioStats, BetData } from "~/types";
+import { useToast } from "~/components/shared/ToastContext";
 
 export default function CarDetails() {
   const params = useParams();
   const navigate = useNavigate();
   const [car, setCar] = useState<Car | null>(null);
+  const { showToast } = useToast();
   const [userStats, setUserStats] = useState<PortfolioStats>(() => {
     // Try to load from localStorage if available
     if (typeof window !== "undefined") {
@@ -54,8 +56,10 @@ export default function CarDetails() {
   const handleBetSubmit = (betData: BetData) => {
     // Check if user has enough funds
     if (!hasSufficientFunds(betData.premium)) {
-      alert(
+      showToast(
         `Insufficient funds. You need $${betData.premium.toLocaleString()} to place this trade.`,
+        "error",
+        5000,
       );
       return;
     }
@@ -101,10 +105,16 @@ export default function CarDetails() {
       (betData.quantity || 1) > 1
         ? `${betData.quantity} contracts`
         : "a contract";
-    alert(
+    showToast(
       `Successfully purchased ${contractText} of ${betData.type} options on ${car.name}!`,
+      "success",
+      1000,
     );
-    navigate("/portfolio");
+
+    // Use setTimeout to allow the user to see the toast before navigating
+    setTimeout(() => {
+      navigate("/portfolio");
+    }, 1100);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CarDetails from "~/routes/cars.$carId";
@@ -9,6 +9,18 @@ import type { BetData, Car } from "~/types";
 vi.mock("uuid", () => ({
   v4: () => "mocked-uuid",
 }));
+
+// Create a mock for the toast functionality
+const mockShowToast = vi.fn();
+
+// Mock the Toast context
+vi.mock("~/components/shared/ToastContext", () => {
+  return {
+    useToast: () => ({
+      showToast: mockShowToast,
+    }),
+  };
+});
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -28,9 +40,6 @@ const localStorageMock = (() => {
 })();
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
-// Mock alert
-global.alert = vi.fn();
-
 // Mock React hooks
 const mockNavigate = vi.fn();
 let mockCarId = "1"; // Default to first car
@@ -41,7 +50,7 @@ vi.mock("@remix-run/react", () => ({
 }));
 
 // Mock BetForm component
-vi.mock("~/components/BetForm", () => ({
+vi.mock("~/components/CarDetails/BetForm", () => ({
   default: ({ onSubmit }: { car: Car; onSubmit: (data: BetData) => void }) => (
     <div data-testid="bet-form">
       <button
@@ -66,6 +75,7 @@ describe("CarDetails Route", () => {
   beforeEach(() => {
     localStorageMock.clear();
     vi.clearAllMocks();
+    vi.useFakeTimers();
     mockCarId = "1"; // Reset to default car
 
     // Set up localStorage with default portfolio stats
@@ -75,6 +85,10 @@ describe("CarDetails Route", () => {
       }
       return null;
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("renders loading state when car is not found", () => {
@@ -138,18 +152,26 @@ describe("CarDetails Route", () => {
   });
 
   it("handles bet submission when user has sufficient funds", async () => {
+    // Mock setTimeout to call the callback immediately
+    vi.spyOn(global, "setTimeout").mockImplementation((callback) => {
+      if (typeof callback === "function") callback();
+      return 1 as unknown as NodeJS.Timeout;
+    });
+
     const user = userEvent.setup();
     render(<CarDetails />);
 
     // Click the submit button
     await user.click(screen.getByTestId("submit-bet-button"));
 
-    // Check if alert was called with success message
-    expect(global.alert).toHaveBeenCalledWith(
+    // Check if showToast was called with success message
+    expect(mockShowToast).toHaveBeenCalledWith(
       expect.stringContaining("Successfully purchased"),
+      "success",
+      expect.any(Number),
     );
 
-    // Check if navigate was called to redirect to portfolio
+    // Check if navigate was called (setTimeout calls the callback immediately in our mock)
     expect(mockNavigate).toHaveBeenCalledWith("/portfolio");
 
     // Check if localStorage was updated with new trade
@@ -161,14 +183,44 @@ describe("CarDetails Route", () => {
       "portfolioStats",
       expect.any(String),
     );
+
+    // Restore mocks
+    vi.restoreAllMocks();
   });
 
-  it("shows alert when user has insufficient funds", async () => {
-    // This test is problematic due to the mocking complexity
-    // Just verify the BetForm renders properly to avoid these issues
+  it("shows toast error when user has insufficient funds", async () => {
+    // Mock setTimeout to call the callback immediately
+    vi.spyOn(global, "setTimeout").mockImplementation((callback) => {
+      if (typeof callback === "function") callback();
+      return 1 as unknown as NodeJS.Timeout;
+    });
+
+    // Set up mock portfolio stats with insufficient funds
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === "portfolioStats") {
+        const insufficientFunds = { ...portfolioStats, cashBalance: 5000 }; // Less than premium
+        return JSON.stringify(insufficientFunds);
+      }
+      return null;
+    });
+
+    const user = userEvent.setup();
     render(<CarDetails />);
-    expect(screen.getByTestId("bet-form")).toBeInTheDocument();
 
-    // Skip actual insufficient funds test for now - would need complex mocking
-  });
+    // Click the submit button
+    await user.click(screen.getByTestId("submit-bet-button"));
+
+    // Check if showToast was called with error message
+    expect(mockShowToast).toHaveBeenCalledWith(
+      expect.stringContaining("Insufficient funds"),
+      "error",
+      expect.any(Number),
+    );
+
+    // Check that navigation didn't happen
+    expect(mockNavigate).not.toHaveBeenCalled();
+
+    // Restore mocks
+    vi.restoreAllMocks();
+  }, 10000); // Set a higher timeout to avoid timeout failures
 });

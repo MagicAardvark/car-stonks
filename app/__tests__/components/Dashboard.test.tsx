@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import Dashboard from "~/components/Dashboard";
+import Dashboard from "~/components/Home/Dashboard";
 
 // Mock data for testing
 const mockDashboardProps = {
