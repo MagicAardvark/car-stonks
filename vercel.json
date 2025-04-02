@@ -1,0 +1,6 @@
+{
+  "framework": "remix",
+  "buildCommand": "yarn vercel-build",
+  "devCommand": "yarn dev",
+  "installCommand": "yarn install"
+}

@@ -1,0 +1,178 @@
+import { Car } from "~/types";
+
+export const mockCars: Car[] = [
+  {
+    id: "1",
+    name: "Porsche 911 GT3",
+    brand: "Porsche",
+    model: "911 GT3",
+    year: 2023,
+    imageUrl: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e",
+    currentPrice: 180000,
+    priceHistory: [
+      { date: "2023-01-01", price: 170000 },
+      { date: "2023-03-01", price: 175000 },
+      { date: "2023-06-01", price: 180000 },
+    ],
+  },
+  {
+    id: "2",
+    name: "Ferrari 488 GTB",
+    brand: "Ferrari",
+    model: "488 GTB",
+    year: 2022,
+    imageUrl: "https://images.unsplash.com/photo-1583121274602-3e2820c69888",
+    currentPrice: 320000,
+    priceHistory: [
+      { date: "2022-09-01", price: 300000 },
+      { date: "2022-12-01", price: 310000 },
+      { date: "2023-03-01", price: 320000 },
+    ],
+  },
+  {
+    id: "3",
+    name: "Lamborghini Huracan",
+    brand: "Lamborghini",
+    model: "Huracan",
+    year: 2023,
+    imageUrl: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c",
+    currentPrice: 270000,
+    priceHistory: [
+      { date: "2023-01-01", price: 280000 },
+      { date: "2023-03-01", price: 275000 },
+      { date: "2023-06-01", price: 270000 },
+    ],
+  },
+  {
+    id: "4",
+    name: "McLaren 720S",
+    brand: "McLaren",
+    model: "720S",
+    year: 2022,
+    imageUrl: "https://images.unsplash.com/photo-1638730558978-18941cc086ad",
+    currentPrice: 310000,
+    priceHistory: [
+      { date: "2022-10-01", price: 290000 },
+      { date: "2023-01-01", price: 295000 },
+      { date: "2023-04-01", price: 310000 },
+    ],
+  },
+  {
+    id: "5",
+    name: "Aston Martin DBS",
+    brand: "Aston Martin",
+    model: "DBS",
+    year: 2023,
+    imageUrl: "https://images.unsplash.com/photo-1630683743045-76ef9f619445",
+    currentPrice: 340000,
+    priceHistory: [
+      { date: "2023-01-01", price: 350000 },
+      { date: "2023-03-01", price: 345000 },
+      { date: "2023-05-01", price: 340000 },
+    ],
+  },
+  {
+    id: "6",
+    name: "Jaguar XJ220",
+    brand: "Jaguar",
+    model: "XJ220",
+    year: 1992,
+    imageUrl:
+      "https://media.gq-magazine.co.uk/photos/5d13aab97fcc8e652b821270/16:9/w_1920,c_limit/jaguar-05-gq-13may19_b.jpg",
+    currentPrice: 580000,
+    priceHistory: [
+      { date: "2022-06-01", price: 500000 },
+      { date: "2022-12-01", price: 535000 },
+      { date: "2023-06-01", price: 580000 },
+    ],
+  },
+  {
+    id: "7",
+    name: "Bugatti Chiron",
+    brand: "Bugatti",
+    model: "Chiron",
+    year: 2021,
+    imageUrl: "https://images.unsplash.com/photo-1627454820903-9646d6ca61f5",
+    currentPrice: 3200000,
+    priceHistory: [
+      { date: "2022-02-01", price: 3000000 },
+      { date: "2022-08-01", price: 3100000 },
+      { date: "2023-02-01", price: 3200000 },
+    ],
+  },
+  {
+    id: "8",
+    name: "Koenigsegg Jesko",
+    brand: "Koenigsegg",
+    model: "Jesko",
+    year: 2022,
+    imageUrl:
+      "https://www.thesupercarblog.com/wp-content/uploads/2023/10/Koenigsegg-Jesko-Attack-Plus-Green-spec-3.jpg",
+    currentPrice: 2800000,
+    priceHistory: [
+      { date: "2022-04-01", price: 2600000 },
+      { date: "2022-10-01", price: 2700000 },
+      { date: "2023-04-01", price: 2800000 },
+    ],
+  },
+  {
+    id: "9",
+    name: "Rolls-Royce Phantom",
+    brand: "Rolls-Royce",
+    model: "Phantom",
+    year: 2023,
+    imageUrl:
+      "https://news.dupontregistry.com/wp-content/uploads/2024/04/2024-rolls-royce-phantom-0-77116-915x570.jpg",
+    currentPrice: 460000,
+    priceHistory: [
+      { date: "2022-12-01", price: 450000 },
+      { date: "2023-03-01", price: 455000 },
+      { date: "2023-06-01", price: 460000 },
+    ],
+  },
+  {
+    id: "10",
+    name: "Pagani Huayra",
+    brand: "Pagani",
+    model: "Huayra",
+    year: 2020,
+    imageUrl:
+      "https://www.topgear.com/sites/default/files/cars-car/carousel/2016/08/rh_huayrabc-67.jpg",
+    currentPrice: 2100000,
+    priceHistory: [
+      { date: "2022-01-01", price: 1900000 },
+      { date: "2022-07-01", price: 2000000 },
+      { date: "2023-01-01", price: 2100000 },
+    ],
+  },
+  {
+    id: "11",
+    name: "Mercedes-AMG GT Black Series",
+    brand: "Mercedes-Benz",
+    model: "AMG GT Black Series",
+    year: 2022,
+    imageUrl:
+      "https://cdn.dealeraccelerate.com/bagauction/10/1743/94419/1920x1440/2021-mercedes-amg-gt-black-series.webp",
+    currentPrice: 325000,
+    priceHistory: [
+      { date: "2022-05-01", price: 320000 },
+      { date: "2022-09-01", price: 325000 },
+      { date: "2023-01-01", price: 325000 },
+    ],
+  },
+  {
+    id: "12",
+    name: "Ferrari LaFerrari",
+    brand: "Ferrari",
+    model: "LaFerrari",
+    year: 2019,
+    imageUrl:
+      "https://www.williamloughran.co.uk//media/7431/ferrari-laferrari-2311-1.jpg",
+    currentPrice: 2900000,
+    priceHistory: [
+      { date: "2022-03-01", price: 2600000 },
+      { date: "2022-09-01", price: 2750000 },
+      { date: "2023-03-01", price: 2900000 },
+    ],
+  },
+];
