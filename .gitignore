@@ -27,3 +27,5 @@ node_modules
 
 # Vercel
 .vercel
+
+coverage

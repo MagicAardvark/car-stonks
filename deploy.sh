@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+# Default to dry-run (preview) mode unless --prod flag is used
+PROD_DEPLOY=false
+if [[ "$1" == "--prod" ]]; then
+  PROD_DEPLOY=true
+  echo "🚨 Running in PRODUCTION mode (deployment will update the live site)"
+else
+  echo "🔍 Running in preview mode (deployment will create a preview URL)"
+  echo "   Use --prod flag to deploy to production"
+fi
+
 echo "🔍 Running TypeScript type check..."
 yarn typecheck
 TS_STATUS=$?
@@ -12,8 +22,8 @@ echo "🔎 Running ESLint..."
 yarn lint:fix
 LINT_STATUS=$?
 
-echo "🧪 Running tests..."
-yarn test
+echo "🧪 Running tests with coverage..."
+yarn test:coverage
 TEST_STATUS=$?
 
 # Check if any of the checks failed
@@ -42,6 +52,12 @@ if [ $BUILD_STATUS -ne 0 ]; then
 fi
 
 echo "🚀 Deploying to Vercel..."
-npx vercel --prod
+if [ "$PROD_DEPLOY" = true ]; then
+  echo "⚠️ Deploying to PRODUCTION environment..."
+  npx vercel --prod
+else
+  echo "🔍 Deploying to preview environment..."
+  npx vercel
+fi
 
 echo "✨ Deployment complete!" 

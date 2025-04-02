@@ -16,7 +16,7 @@ A platform for trading car options, similar to stock market options. Users can b
 - React
 - TypeScript
 - Tailwind CSS
-- Jest & Testing Library
+- Vitest & Testing Library
 
 ## Prerequisites
 
@@ -52,11 +52,52 @@ A platform for trading car options, similar to stock market options. Users can b
 - `yarn build` - Build the application
 - `yarn start` - Start the production server
 - `yarn test` - Run tests
+- `yarn test:watch` - Run tests in watch mode
+- `yarn test:ui` - Run tests with the UI
+- `yarn test:coverage` - Generate test coverage report
 - `yarn lint` - Run ESLint
 - `yarn lint:fix` - Fix ESLint issues
 - `yarn prettier:fix` - Fix code formatting
 - `yarn format` - Format all files with Prettier
 - `yarn vercel-build` - Build for Vercel deployment
+
+## Testing
+
+The project uses Vitest and Testing Library for running tests. The test suite covers components, data files, and routes.
+
+### Running Tests
+
+```bash
+# Run all tests
+yarn test
+
+# Run tests in watch mode
+yarn test:watch
+
+# Run tests with UI
+yarn test:ui
+
+# Generate test coverage report
+yarn test:coverage
+```
+
+### Code Coverage
+
+Test coverage reports are automatically generated when running `yarn test:coverage`. The report shows coverage for:
+
+- Statements
+- Branches
+- Functions
+- Lines
+
+Current coverage:
+
+- Components: ~95%
+- Data files: 100%
+- Routes: ~17%
+- Overall: ~67%
+
+The HTML coverage report is generated in the `coverage` directory and can be viewed by opening `coverage/index.html` in a browser.
 
 ## Deployment
 
@@ -66,7 +107,7 @@ The project is set up for easy deployment on Vercel.
 ./deploy.sh
 ```
 
-This script runs all checks (TypeScript, ESLint, tests), builds the app, and deploys to Vercel.
+This script runs all checks (TypeScript, ESLint, tests with coverage), builds the app, and deploys to Vercel.
 
 ## Git Hooks
 
